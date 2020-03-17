@@ -245,6 +245,10 @@ ttyplay (FILE *fp, ReadFunc read_func, WriteFunc write_func, Options o)
             StringBuilder_write(sb, arg_buffer);
         }
         if (!skip) {
+            printf("%s", o.img_dir);
+            printf("%d", index);
+            printf("%s", o.img_ext);
+            printf("%s XXX %d XXX %s", o.img_dir, index, o.img_ext);
             if (sprintf(img_path, "%s/%d.%s", o.img_dir, index, o.img_ext) < 0) {
                 fatalf("Error: Failed to format filename");
             }
@@ -305,14 +309,20 @@ main (int argc, char **argv)
     options.skip_threshold = 0;
     options.last_frame_delay = 1000;
     options.debug = getenv("TTYGIF_DEBUG") != NULL;
-    options.out_file = "tty.gif";
+    options.out_file = "/tmp/tty.gif";
     options.speed = 1.0;
 
     char dir_template[] = "/tmp/ttygif.XXXXXX";
-    options.img_dir = mkdtemp(dir_template);
+    //options.img_dir = mkdtemp(dir_template);
+    mkdtemp(dir_template);
+    options.img_dir = dir_template;
     if (options.img_dir == NULL) {
+printf("%s\n", "XXX ERR");
         fatalf("Error: Failed to create tmp directory.");
     }
+printf("%s\n", "XXX before ...");
+fflush(stdout);
+printf("%s\n", options.img_dir);
 
 
 #ifdef OS_DARWIN
